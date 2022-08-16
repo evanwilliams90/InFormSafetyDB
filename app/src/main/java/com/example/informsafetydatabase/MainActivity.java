@@ -39,22 +39,22 @@ public class MainActivity extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(MainActivity.this);
 
         // test insert
-        registrationForm = new RegistrationForm(-1, -1, -1, "Teacher 1", "teacher1@gmail.com", "0210727600", "password01", "password01", true);
+        registrationForm = new RegistrationForm("Teacher 1", "teacher1@huttkindergartens.org.nz", "0210727600", "password01", "password01");
         teacherID = databaseHelper.insertTeacher(registrationForm);
         registrationForm.setTeacherID((int) teacherID);
         userID = databaseHelper.insertUser(registrationForm);
 
-        registrationForm = new RegistrationForm(-1, -1, -1, "Teacher 2", "teacher2@gmail.com", "0210727598", "password02", "password01", true);
+        registrationForm = new RegistrationForm("Teacher 2", "teacher2@huttkindergartens.org.nz", "0210727598", "password02", "password01");
         teacherID = databaseHelper.insertTeacher(registrationForm);
         registrationForm.setTeacherID((int) teacherID);
         userID = databaseHelper.insertUser(registrationForm);
 
-        registrationForm = new RegistrationForm(-1, -1, -1, "Parent 1", "imaparent@gmail.com", "0270727676", "password03", "password01", false);
+        registrationForm = new RegistrationForm("Parent 1", "imaparent@gmail.com", "0270727676", "password03", "password01");
         guardianID = databaseHelper.insertGuardian(registrationForm);
         registrationForm.setGuardianID((int) guardianID);
         userID = databaseHelper.insertUser(registrationForm);
 
-        registrationForm = new RegistrationForm(-1, -1, -1, "Parent 2", "imaparenttoo@gmail.com", "0220727622", "password04", "password01", false);
+        registrationForm = new RegistrationForm("Parent 2", "imaparenttoo@gmail.com", "0220727622", "password04", "password01");
         guardianID = databaseHelper.insertGuardian(registrationForm);
         registrationForm.setGuardianID((int) guardianID);
         userID = databaseHelper.insertUser(registrationForm);
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // test login
-        loginForm = new LoginForm("teacher1@gmail.com", "password01");
+        loginForm = new LoginForm("teacher1@huttkindergartens.org.nz", "password01");
         String correctPassword = databaseHelper.selectPassword(loginForm.getEmail());
         String inputPassword = loginForm.getPassword();
 

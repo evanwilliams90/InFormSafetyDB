@@ -64,10 +64,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         cv.put("teacher_id", registrationForm.getTeacherID());
         cv.put("guardian_id", registrationForm.getGuardianID());
-
-        // Convert is_teacher from bool to int for SQLite
-        cv.put("is_teacher", registrationForm.isTeacher() ? 1 : 0);
-
+        cv.put("is_teacher", registrationForm.isTeacher());
         cv.put("name", registrationForm.getName());
         cv.put("email", registrationForm.getEmail());
         cv.put("phone", registrationForm.getPhone());

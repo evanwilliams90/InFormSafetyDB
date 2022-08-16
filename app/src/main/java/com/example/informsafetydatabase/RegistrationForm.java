@@ -7,24 +7,32 @@ public class RegistrationForm {
     private int userID;
     private int teacherID;
     private int guardianID;
+    public int isTeacher;
     private String name;
     private String email;
     private String phone;
     private String password;
     private String confirmPassword;
-    public boolean isTeacher;
 
 
-    public RegistrationForm(int userID, int teacherID, int guardianID, String name, String email, String phone, String password, String confirmPassword, boolean isTeacher) {
-        this.userID = userID;
-        this.teacherID = teacherID;
-        this.guardianID = guardianID;
+    public RegistrationForm(String name, String email, String phone, String password, String confirmPassword) {
+        this.userID = -1;
+        this.teacherID = -1;
+        this.guardianID = -1;
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.password = password;
         this.confirmPassword = confirmPassword;
-        this.isTeacher = isTeacher;
+
+        // If user has a Kindergarten email address, register them as a Teacher
+        // Otherwise register them as a Guardian.
+        if (email.contains("@huttkindergartens.org.nz")) {
+            this.isTeacher = 1;
+        }
+        else {
+            this.isTeacher = 0;
+        }
     }
 
 
@@ -114,11 +122,11 @@ public class RegistrationForm {
         this.confirmPassword = confirmPassword;
     }
 
-    public boolean isTeacher() {
+    public int isTeacher() {
         return isTeacher;
     }
 
-    public void setTeacher(boolean teacher) {
+    public void setTeacher(int teacher) {
         isTeacher = teacher;
     }
 
