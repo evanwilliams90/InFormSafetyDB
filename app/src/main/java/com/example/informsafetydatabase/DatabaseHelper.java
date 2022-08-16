@@ -160,6 +160,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    // Update Name, Email, Phone based on ID
+    public void updateUserDetails(int id, String newName, String newEmail, String newPhone) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        String queryString = "UPDATE User SET name = '" + newName +
+                                          "', email = '" + newEmail +
+                                          "', phone = '" + newPhone +
+                                       "' where id = " + id;
+        db.execSQL(queryString);
+
+    }
+
 
 
     // Get all info for a user based on email

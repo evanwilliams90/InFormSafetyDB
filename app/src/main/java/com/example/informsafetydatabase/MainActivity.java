@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     LoginForm loginForm;
     ResetPasswordForm resetPasswordForm;
     ChangePasswordForm changePasswordForm;
+    ChangeUserDetailsForm changeUserDetailsForm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         // test login
-        //loginForm = new LoginForm("teacher1@huttkindergartens.org.nz", "password01");
-        loginForm = new LoginForm("imaparent@gmail.com", "password03");
+        loginForm = new LoginForm("teacher1@huttkindergartens.org.nz", "password01");
+        //loginForm = new LoginForm("imaparent@gmail.com", "password03");
         String inputPassword = loginForm.getPassword();
         String correctPassword = databaseHelper.selectPassword(loginForm.getEmail());
 
@@ -83,32 +84,65 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        // Test Change Password (through Settings) - must be logged in first
-        changePasswordForm = new ChangePasswordForm("password03", "imapassword", "imapassword");
+        // Test Change User Details (through Settings) - must be logged in first
+        changeUserDetailsForm = new ChangeUserDetailsForm("", "", "02212345678", "password01");
 
         // Check that entered password matches user's current password
-        if (changePasswordForm.getCurrentPassword().equals(userModel.getPassword())) {
+        if (changeUserDetailsForm.getPassword().equals(userModel.getPassword())) {
 
-            // Check that new password matches confirm password
-            if (changePasswordForm.getNewPassword().equals(changePasswordForm.getConfirmPassword())) {
-
-                // Update the password in the database
-                databaseHelper.updatePassword(userModel.getEmail(), changePasswordForm.getNewPassword());
-
-                // Update the password in the logged in user object
-                userModel.setPassword(changePasswordForm.getNewPassword());
-
-                // toast usermodel new password to check it worked
-                Toast.makeText(MainActivity.this, "Changed password to " + userModel.getPassword(), Toast.LENGTH_LONG).show();
-
+            // If name/email/phone are blank, fill them in from User Model
+            if (changeUserDetailsForm.getName().equals("")) {
+                changeUserDetailsForm.setName(userModel.getName());
             }
-            else {
-                Toast.makeText(MainActivity.this, "New Password and Confirm Password do not match", Toast.LENGTH_LONG).show();
+
+            if (changeUserDetailsForm.getEmail().equals("")) {
+                changeUserDetailsForm.setEmail(userModel.getEmail());
             }
+
+            if (changeUserDetailsForm.getPhone().equals("")) {
+                changeUserDetailsForm.setPhone(userModel.getPhone());
+            }
+
+            // Update the entered user details in the database
+            databaseHelper.updateUserDetails(userModel.getUserID(),
+                    changeUserDetailsForm.getName(),
+                    changeUserDetailsForm.getEmail(),
+                    changeUserDetailsForm.getPhone());
+
+            Toast.makeText(MainActivity.this, "Updated details", Toast.LENGTH_LONG).show();
+
         }
         else {
-            Toast.makeText(MainActivity.this, "Current Password is incorrect", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "Incorrect Password", Toast.LENGTH_LONG).show();
         }
+
+
+        // Test Change Password (through Settings) - must be logged in first
+//        changePasswordForm = new ChangePasswordForm("password03", "imapassword", "imapassword");
+//
+//        // Check that entered password matches user's current password
+//        if (changePasswordForm.getCurrentPassword().equals(userModel.getPassword())) {
+//
+//            // Check that new password matches confirm password
+//            if (changePasswordForm.getNewPassword().equals(changePasswordForm.getConfirmPassword())) {
+//
+//                // Update the password in the database
+//                databaseHelper.updatePassword(userModel.getEmail(), changePasswordForm.getNewPassword());
+//
+//                // Update the password in the logged in user object
+//                userModel.setPassword(changePasswordForm.getNewPassword());
+//
+//                // toast usermodel new password to check it worked
+//                Toast.makeText(MainActivity.this, "Changed password to " + userModel.getPassword(), Toast.LENGTH_LONG).show();
+//
+//            }
+//            else {
+//                Toast.makeText(MainActivity.this, "New Password and Confirm Password do not match", Toast.LENGTH_LONG).show();
+//            }
+//        }
+//        else {
+//            Toast.makeText(MainActivity.this, "Current Password is incorrect", Toast.LENGTH_LONG).show();
+//        }
 
 
 
