@@ -24,9 +24,12 @@ public class MainActivity extends AppCompatActivity {
     ListView lv_customerList;
     ArrayAdapter customerArrayAdapter;
     DatabaseHelper databaseHelper;
-    boolean success;
+    long userID;
     long teacherID;
     long guardianID;
+    RegistrationForm registrationForm;
+    UserModel userModel;
+    LoginForm loginForm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,33 +39,55 @@ public class MainActivity extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(MainActivity.this);
 
         // test insert
-        UserModel userModel = new UserModel(-1, -1, -1, "Teacher 1", "teacher1@gmail.com", "0210727600", "password01", "password01", true);
-        teacherID = databaseHelper.insertTeacher(userModel);
-        userModel.setTeacherID((int) teacherID);
-        success = databaseHelper.insertUser(userModel);
+        registrationForm = new RegistrationForm(-1, -1, -1, "Teacher 1", "teacher1@gmail.com", "0210727600", "password01", "password01", true);
+        teacherID = databaseHelper.insertTeacher(registrationForm);
+        registrationForm.setTeacherID((int) teacherID);
+        userID = databaseHelper.insertUser(registrationForm);
 
-        userModel = new UserModel(-1, -1, -1, "Teacher 2", "teacher2@gmail.com", "0210727598", "password02", "password01", true);
-        teacherID = databaseHelper.insertTeacher(userModel);
-        userModel.setTeacherID((int) teacherID);
-        success = databaseHelper.insertUser(userModel);
+        registrationForm = new RegistrationForm(-1, -1, -1, "Teacher 2", "teacher2@gmail.com", "0210727598", "password02", "password01", true);
+        teacherID = databaseHelper.insertTeacher(registrationForm);
+        registrationForm.setTeacherID((int) teacherID);
+        userID = databaseHelper.insertUser(registrationForm);
 
-        userModel = new UserModel(-1, -1, -1, "Parent 1", "imaparent@gmail.com", "0270727676", "password03", "password01", false);
-        guardianID = databaseHelper.insertGuardian(userModel);
-        userModel.setGuardianID((int) guardianID);
-        success = databaseHelper.insertUser(userModel);
+        registrationForm = new RegistrationForm(-1, -1, -1, "Parent 1", "imaparent@gmail.com", "0270727676", "password03", "password01", false);
+        guardianID = databaseHelper.insertGuardian(registrationForm);
+        registrationForm.setGuardianID((int) guardianID);
+        userID = databaseHelper.insertUser(registrationForm);
 
-        userModel = new UserModel(-1, -1, -1, "Parent 2", "imaparenttoo@gmail.com", "0220727622", "password04", "password01", false);
-        guardianID = databaseHelper.insertGuardian(userModel);
-        userModel.setGuardianID((int) guardianID);
-        success = databaseHelper.insertUser(userModel);
+        registrationForm = new RegistrationForm(-1, -1, -1, "Parent 2", "imaparenttoo@gmail.com", "0220727622", "password04", "password01", false);
+        guardianID = databaseHelper.insertGuardian(registrationForm);
+        registrationForm.setGuardianID((int) guardianID);
+        userID = databaseHelper.insertUser(registrationForm);
+
+
+
+        // test login
+        loginForm = new LoginForm("teacher1@gmail.com", "password01");
+        String correctPassword = databaseHelper.selectPassword(loginForm.getEmail());
+        String inputPassword = loginForm.getPassword();
+
+        // If correct password given, generate a UserModel with all of the user's data
+        if (inputPassword.equals(correctPassword)) {
+
+            UserModel usermodel = databaseHelper.selectUser(loginForm.getEmail());
+            Toast.makeText(MainActivity.this, usermodel.toString(), Toast.LENGTH_LONG).show();
+
+
+
+
+
+        }
+        else {
+            Toast.makeText(MainActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
+        }
 
 
         // test delete
-        userModel = new UserModel(3, -1, 1, "", "", "", "", "", false);
-        databaseHelper.deleteUser(userModel);
-        databaseHelper.deleteGuardian(userModel);
+//        userModel = new UserModel(3, -1, 1, "", "", "", "", "", false);
+//        databaseHelper.deleteUser(userModel);
+//        databaseHelper.deleteGuardian(userModel);
 
-        //Toast.makeText(MainActivity.this, userModel.toString(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(MainActivity.this, registrationForm.toString(), Toast.LENGTH_SHORT).show();
 
     }
 

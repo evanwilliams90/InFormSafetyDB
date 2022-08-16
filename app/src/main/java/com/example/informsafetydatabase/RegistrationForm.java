@@ -1,50 +1,53 @@
 package com.example.informsafetydatabase;
 
-// UserModel object holds data of the logged in user.
+// RegistrationForm object holds the data entered into a submitted Registration form.
 
-public class UserModel {
+public class RegistrationForm {
 
     private int userID;
     private int teacherID;
     private int guardianID;
-    public boolean isTeacher;
     private String name;
     private String email;
     private String phone;
     private String password;
+    private String confirmPassword;
+    public boolean isTeacher;
 
 
-    public UserModel(int userID, int teacherID, int guardianID, boolean isTeacher, String name, String email, String phone, String password) {
+    public RegistrationForm(int userID, int teacherID, int guardianID, String name, String email, String phone, String password, String confirmPassword, boolean isTeacher) {
         this.userID = userID;
         this.teacherID = teacherID;
         this.guardianID = guardianID;
-        this.isTeacher = isTeacher;
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.password = password;
+        this.confirmPassword = confirmPassword;
+        this.isTeacher = isTeacher;
     }
 
 
     // toString - for printing
     @Override
     public String toString() {
-        return "userModel{" +
+        return "registrationForm{" +
                 "id=" + userID +
                 ", teacherID='" + teacherID + '\'' +
                 ", guardianID='" + guardianID + '\'' +
-                ", isTeacher=" + isTeacher + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
-                ", password='" + password +
+                ", password='" + password + '\'' +
+                ", confirmPassword='" + confirmPassword + '\'' +
+                ", isTeacher=" + isTeacher +
                 '}';
     }
 
 
     // Getters and setters
 
-    public UserModel() {
+    public RegistrationForm() {
     }
 
     public int getUserID() {
@@ -101,6 +104,14 @@ public class UserModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
     public boolean isTeacher() {
