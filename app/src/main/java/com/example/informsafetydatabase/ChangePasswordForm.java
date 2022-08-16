@@ -7,7 +7,7 @@ public class ChangePasswordForm {
     private String confirmPassword;
 
 
-    public ChangePasswordForm(String password) {
+    public ChangePasswordForm(String currentPassword, String newPassword, String confirmPassword) {
         this.currentPassword = currentPassword;
         this.newPassword = newPassword;
         this.confirmPassword = confirmPassword;

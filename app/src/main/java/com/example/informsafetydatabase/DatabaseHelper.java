@@ -204,4 +204,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return userModel;
     }
 
+
+    // Delete all records from teacher/guardian/user
+    public void deleteUsers() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM Teacher");
+        db.execSQL("DELETE FROM Guardian");
+        db.execSQL("DELETE FROM User");
+    }
+
 }
