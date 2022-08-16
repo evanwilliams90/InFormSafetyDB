@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     RegistrationForm registrationForm;
     UserModel userModel;
     LoginForm loginForm;
+    ResetPasswordForm resetPasswordForm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,23 +63,29 @@ public class MainActivity extends AppCompatActivity {
 
 
         // test login
-        loginForm = new LoginForm("teacher1@huttkindergartens.org.nz", "password01");
-        String correctPassword = databaseHelper.selectPassword(loginForm.getEmail());
-        String inputPassword = loginForm.getPassword();
+//        loginForm = new LoginForm("teacher1@huttkindergartens.org.nz", "password01");
+//        String correctPassword = databaseHelper.selectPassword(loginForm.getEmail());
+//        String inputPassword = loginForm.getPassword();
+//
+//        // If correct password given, generate a UserModel with all of the user's data
+//        if (inputPassword.equals(correctPassword)) {
+//
+//            UserModel usermodel = databaseHelper.selectUser(loginForm.getEmail());
+//            Toast.makeText(MainActivity.this, usermodel.toString(), Toast.LENGTH_LONG).show();
+//
+//        }
+//        else {
+//            Toast.makeText(MainActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
+//        }
 
-        // If correct password given, generate a UserModel with all of the user's data
-        if (inputPassword.equals(correctPassword)) {
-
-            UserModel usermodel = databaseHelper.selectUser(loginForm.getEmail());
-            Toast.makeText(MainActivity.this, usermodel.toString(), Toast.LENGTH_LONG).show();
-
-
-
-
-
+        // test password reset
+        resetPasswordForm = new ResetPasswordForm("teacher1@huttkindergartens.org.nz", "mynewpassword", "mynewpassword");
+        if (resetPasswordForm.getNewPassword().equals(resetPasswordForm.getConfirmPassword())) {
+            databaseHelper.updatePassword(resetPasswordForm.getEmail(), resetPasswordForm.getNewPassword());
+            Toast.makeText(MainActivity.this, "Changed password to " + resetPasswordForm.getNewPassword(), Toast.LENGTH_LONG).show();
         }
         else {
-            Toast.makeText(MainActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Confirm Password must match New Password", Toast.LENGTH_LONG).show();
         }
 
 

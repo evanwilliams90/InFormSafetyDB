@@ -2,13 +2,13 @@ package com.example.informsafetydatabase;
 
 public class ResetPasswordForm {
 
-    private String currentPassword;
+    private String email;
     private String newPassword;
     private String confirmPassword;
 
 
-    public ResetPasswordForm(String password) {
-        this.currentPassword = currentPassword;
+    public ResetPasswordForm(String email, String newPassword, String confirmPassword) {
+        this.email = email;
         this.newPassword = newPassword;
         this.confirmPassword = confirmPassword;
     }
@@ -18,7 +18,6 @@ public class ResetPasswordForm {
     @Override
     public String toString() {
         return "resetPasswordForm{" +
-                ", currentPassword='" + currentPassword + '\'' +
                 ", newPassword='" + newPassword + '\'' +
                 ", confirmPassword='" + confirmPassword + '\'' +
                 '}';
@@ -30,14 +29,13 @@ public class ResetPasswordForm {
     public ResetPasswordForm() {
     }
 
-    public String getCurrentPassword() {
-        return currentPassword;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCurrentPassword(String currentPassword) {
-        this.currentPassword = currentPassword;
+    public void setEmail(String email) {
+        this.email = email;
     }
-
     public String getNewPassword() {
         return newPassword;
     }
