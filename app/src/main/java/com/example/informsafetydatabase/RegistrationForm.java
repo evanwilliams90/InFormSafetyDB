@@ -25,14 +25,9 @@ public class RegistrationForm {
         this.password = password;
         this.confirmPassword = confirmPassword;
 
-        // If user has a Kindergarten email address, register them as a Teacher
-        // Otherwise register them as a Guardian.
-        if (email.contains("@huttkindergartens.org.nz")) {
-            this.isTeacher = 1;
-        }
-        else {
-            this.isTeacher = 0;
-        }
+        // By default, register as a Guardian. In Registration Activity set this to True if
+        // the email address belongs to an ECE Centre.
+        this.isTeacher = 0;
     }
 
 
