@@ -27,12 +27,7 @@ import javax.crypto.NoSuchPaddingException;
 
 public class MainActivity extends AppCompatActivity {
 
-    // create references to buttons and other controls
-    Button btn_add, btn_viewAll;
-    EditText et_name, et_age;
-    Switch sw_activeCustomer;
-    ListView lv_customerList;
-    ArrayAdapter customerArrayAdapter;
+    // Create references to user data
     DatabaseHelper databaseHelper;
     long userID;
     long teacherID;
@@ -45,106 +40,59 @@ public class MainActivity extends AppCompatActivity {
     ChangeUserDetailsForm changeUserDetailsForm;
 
 
-
-
+    // Create the Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Import database functions
         databaseHelper = new DatabaseHelper(MainActivity.this);
 
-        // test insert (delete records first)
+        // FOR TESTING ONLY: Empty the database tables and start over
         databaseHelper.deleteUsers();
 
-
-//      test registration
+//      Test Registration
         registrationForm = new RegistrationForm("Teacher 1", "teacher1@huttkindergartens.org.nz", "0210727600", "password01", "password01");
         registerUser(registrationForm);
 
-//        registrationForm = new RegistrationForm("Teacher 2", "teacher2@huttkindergartens.org.nz", "0210727598", "password02", "password02");
-//        registerUser(registrationForm);
-//
-//        registrationForm = new RegistrationForm("Parent 1", "imaparent@gmail.com", "0270727676", "password03", "password03");
-//        registerUser(registrationForm);
-//
-//        registrationForm = new RegistrationForm("Parent 2", "imaparenttoo@gmail.com", "0220727622", "password04", "password04");
-//        registerUser(registrationForm);
+        registrationForm = new RegistrationForm("Teacher 2", "teacher2@huttkindergartens.org.nz", "0210727598", "password02", "password02");
+        registerUser(registrationForm);
 
+        registrationForm = new RegistrationForm("Parent 1", "imaparent@gmail.com", "0270727676", "password03", "password03");
+        registerUser(registrationForm);
 
+        registrationForm = new RegistrationForm("Parent 2", "imaparenttoo@gmail.com", "0220727622", "password04", "password04");
+        registerUser(registrationForm);
 
-//      test login
+//      Test Login
         loginForm = new LoginForm("teacher1@huttkindergartens.org.nz", "password01");
         logInUser(loginForm);
-//        Toast.makeText(MainActivity.this, userModel.toString(), Toast.LENGTH_SHORT).show();
 
-        //        loginForm = new LoginForm("imaparent@gmail.com", "password03");
-
-
-
-
-//         Test Change User Details (through Settings) - must be logged in first
+//      Test Change User Details (through Settings) - must be logged in first
         changeUserDetailsForm = new ChangeUserDetailsForm("First Teacher", "firstteacher@huttkindergartens.org.nz", "02101010101", "password01");
         changeUserDetails(userModel, changeUserDetailsForm);
 
-//        // Test log in again
+//      Test log in with new details
         loginForm = new LoginForm("firstteacher@huttkindergartens.org.nz", "password01");
         logInUser(loginForm);
-//        Toast.makeText(MainActivity.this, userModel.toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, userModel.toString(), Toast.LENGTH_SHORT).show();
 
-//        int myid = databaseHelper.getIDFromEmail("firstteacher@huttkindergartens.org.nz");
-//        Toast.makeText(MainActivity.this, "id: " + myid, Toast.LENGTH_SHORT).show();
-
-        // Test Change Password (through Settings) - must be logged in first
+//      Test Change Password (through Settings) - must be logged in first
         changePasswordForm = new ChangePasswordForm("password01", "imapassword", "imapassword");
         changePassword(userModel, changePasswordForm);
 
+//      Test log in with new password
+        loginForm = new LoginForm("firstteacher@huttkindergartens.org.nz", "imapassword");
+        logInUser(loginForm);
 
-        // test password reset
+//      Test password reset
         resetPasswordForm = new ResetPasswordForm("firstteacher@huttkindergartens.org.nz", "mynewpassword", "mynewpassword");
+        resetPassword(resetPasswordForm);
 
-        // Check that new password and confirm password fields match
-        if (resetPasswordForm.getNewPassword().equals(resetPasswordForm.getConfirmPassword())) {
-
-            // Get user id matching the email address
-
-
-            // Update the database with new password (encrypted)
-            databaseHelper.updatePassword(resetPasswordForm.getEmail(), resetPasswordForm.getNewPassword());
-            Toast.makeText(MainActivity.this, "Changed password to " + resetPasswordForm.getNewPassword(), Toast.LENGTH_SHORT).show();
-
-            // checking
-            // Get user ID matching the provided email
-//            int myid = databaseHelper.getIDFromEmail(resetPasswordForm.getEmail());
-//            String myEmail = resetPasswordForm.getEmail();
-//            // Get and decrypt password matching the provided id
-//            String myPassword = databaseHelper.selectPassword(myid);
-
-            // Do login
-            loginForm = new LoginForm(resetPasswordForm.getEmail(), resetPasswordForm.getNewPassword());
-            logInUser(loginForm);
-
-
-
-        }
-        else {
-            Toast.makeText(MainActivity.this, "Confirm Password must match New Password", Toast.LENGTH_SHORT).show();
-        }
-
-
-    int myid = databaseHelper.getIDFromEmail("firstteacher@huttkindergartens.org.nz");
-    // Get and decrypt password matching the provided id
-    String myPassword = databaseHelper.selectPassword(myid);
-        Toast.makeText(MainActivity.this, "Testing", Toast.LENGTH_SHORT).show();
-
-
-
-        // test delete
-//        userModel = new UserModel(3, -1, 1, "", "", "", "", "", false);
-//        databaseHelper.deleteUser(userModel);
-//        databaseHelper.deleteGuardian(userModel);
-
-        //Toast.makeText(MainActivity.this, registrationForm.toString(), Toast.LENGTH_SHORT).show();
+//      Test log in with new password
+        loginForm = new LoginForm("firstteacher@huttkindergartens.org.nz", "mynewpassword");
+        logInUser(loginForm);
 
     }
 
@@ -176,6 +124,11 @@ public class MainActivity extends AppCompatActivity {
             // Insert to User table
             userID = databaseHelper.insertUser(registrationForm);
             Toast.makeText(MainActivity.this, "Registered " + registrationForm.getName(), Toast.LENGTH_SHORT).show();
+
+            // Log the user into their new account
+            loginForm = new LoginForm(registrationForm.getEmail(), registrationForm.getPassword());
+            logInUser(loginForm);
+
         }
         else {
             Toast.makeText(MainActivity.this, "Password and Confirm Password do not match", Toast.LENGTH_SHORT).show();
@@ -240,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
             userModel.setPhone(changeUserDetailsForm.getPhone());
 
             // Toast updated user
-            //Toast.makeText(MainActivity.this, "Updated to: " + userModel.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Updated to: " + userModel.toString(), Toast.LENGTH_SHORT).show();
 
         }
         else {
@@ -259,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
             if (changePasswordForm.getNewPassword().equals(changePasswordForm.getConfirmPassword())) {
 
                 // Update the password in the database
-                databaseHelper.updatePassword(userModel.getEmail(), changePasswordForm.getNewPassword());
+                databaseHelper.updatePassword(userModel.getUserID(), changePasswordForm.getNewPassword());
 
                 // Update the password in the logged in user object
                 userModel.setPassword(changePasswordForm.getNewPassword());
@@ -274,6 +227,29 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             Toast.makeText(MainActivity.this, "Current Password is incorrect", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    // Reset a user's password and recover their account
+    public void resetPassword(ResetPasswordForm resetPasswordForm) {
+        // Check that new password and confirm password fields match
+        if (resetPasswordForm.getNewPassword().equals(resetPasswordForm.getConfirmPassword())) {
+
+            // Get user id matching the email address
+            int id = databaseHelper.getIDFromEmail(resetPasswordForm.getEmail());
+
+            // Update the database with new password (encrypted)
+            databaseHelper.updatePassword(id, resetPasswordForm.getNewPassword());
+            Toast.makeText(MainActivity.this, "Changed password to " + resetPasswordForm.getNewPassword(), Toast.LENGTH_SHORT).show();
+
+            // Log the user back in to their account
+            loginForm = new LoginForm(resetPasswordForm.getEmail(), resetPasswordForm.getNewPassword());
+            logInUser(loginForm);
+
+        }
+        else {
+            Toast.makeText(MainActivity.this, "Confirm Password must match New Password", Toast.LENGTH_SHORT).show();
         }
     }
 }

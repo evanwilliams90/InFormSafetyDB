@@ -179,15 +179,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    // Update password based on user email
-    public void updatePassword(String email, String newPassword) {
+    // Update password based on user id
+    public void updatePassword(int id, String newPassword) {
 
         // Encrypt details
         newPassword = encrypt(newPassword);
 
         // Insert into User table
         SQLiteDatabase db = this.getWritableDatabase();
-        String queryString = "UPDATE User SET password = '" + newPassword + "' where email = '" + email + "'";
+        String queryString = "UPDATE User SET password = '" + newPassword + "' where id = " + id;
         db.execSQL(queryString);
 
     }
