@@ -47,9 +47,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "password TEXT" +
                 ")";
 
+        String createChildTable = "CREATE TABLE IF NOT EXISTS Child (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "guardian_id INTEGER REFERENCES Guardian (id), " +
+                "name TEXT," +
+                "nickname TEXT" +
+                ")";
+
         db.execSQL(createTeacherTable);
         db.execSQL(createGuardianTable);
         db.execSQL(createUserTable);
+        db.execSQL(createChildTable);
     }
 
     // When DB version changed
