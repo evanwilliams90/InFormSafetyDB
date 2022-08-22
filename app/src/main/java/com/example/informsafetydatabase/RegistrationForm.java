@@ -7,7 +7,7 @@ public class RegistrationForm {
     private int userID;
     private int teacherID;
     private int guardianID;
-    public int isTeacher;
+    private int isTeacher;
     private String name;
     private String email;
     private String phone;
